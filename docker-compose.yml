@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  deploy:
+    depends_on:
+      - postgres
+    container_name: deployMyPocketPurse
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5055:5055"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://dbPocketPostgres:5432/db_pocket_purse
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=12345
+  postgres:
+    container_name: dbPocketPostgres
+    image: postgres
+    environment:
+      POSTGRES_DB: "db_pocket_purse"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "12345"
+    ports:
+      - "5432:5432"
+    #    healthcheck:
+    #      test: ["CMD-SHELL", "pg_isready -U habrpguser -d habrdb"]
+    #      interval: 10s
+    #      timeout: 5s
+    #      retries: 5
+    #      start_period: 10s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 4G
+#    networks:
+#      - postgres

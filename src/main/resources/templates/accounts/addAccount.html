@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create account</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <form method="POST" th:action="@{/accounts/add}" th:object="${accountForm}">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input name="name" type="text" class="form-control" id="name">
+        </div>
+        <div class="mb-3">
+            <label for="amount" class="form-label">Amount</label>
+            <input name="amount" type="text" class="form-control" id="amount">
+        </div>
+        <div class="mb-3">
+            <label for="currencyType" class="form-label">Currency type</label>
+            <select class="form-select" name="CurrencyType" id="currencyType" aria-label="Default select example">
+                <option selected>choose a currency type</option>
+                <option th:each="currencyType : ${T(com.project.mypocketpurse.model.CurrencyType).values()}"
+                        th:value="${currencyType}" th:text="${currencyType.getCurrencyTypeText()}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input name="description" type="text" class="form-control" id="description">
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+    <br>
+    <button class="btn btn-secondary" onclick="window.history.back()">Back</button>
+</div>
+</body>
+</html>

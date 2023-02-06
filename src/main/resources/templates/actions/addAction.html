@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add action</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <form method="POST" th:action="@{/actions/add}" th:object="${actionForm}">
+        <div class="mb-3">
+            <label for="account" class="form-label">Account</label>
+            <select th:field="${actionForm.account}" class="form-select" name="Account" id="account"
+                    aria-label="Default select example">
+                <option value="null" selected>select an account</option>
+                <option th:each="account : ${accounts}"
+                        th:value="${account.id}"
+                        th:text="${account.name}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="amount" class="form-label">Amount</label>
+            <input name="amount" type="text" class="form-control" id="amount">
+        </div>
+        <div class="mb-3">
+            <label for="actionType" class="form-label">Action Type</label>
+            <select class="form-select" name="ActionType" id="actionType"
+                    aria-label="Default select example">
+                <option selected>select an action type</option>
+                <option th:each="actionType : ${T(com.project.mypocketpurse.model.ActionType).values()}"
+                        th:value="${actionType}"
+                        th:text="${actionType.getActionTypeText()}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select th:field="${actionForm.category}" class="form-select" name="id" id="category"
+                    aria-label="Default select example">
+                <option value="null" selected>select a category</option>
+                <option th:each="category : ${categories}"
+                        th:value="${category.id}"
+                        th:text="${category.name}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="dateTime" class="form-label">Action time</label>
+            <input placeholder="YYYY-MM-DD" name="DateTime" type="text" class="form-control" id="dateTime">
+        </div>
+        <div class="mb-3">
+            <label for="label" class="form-label">Label</label>
+            <select th:field="${actionForm.label}" class="form-select" name="label" id="label"
+                    aria-label="Default select example">
+                <option value="0" selected>select a label</option>
+                <option th:each="label : ${labels}"
+                        th:value="${label.id}"
+                        th:text="${label.name}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Create</button>
+        <button type="button" class="btn btn-secondary" style="float: right" onclick="window.history.back()">Back</button>
+    </form>
+</div>
+</body>
+</html>

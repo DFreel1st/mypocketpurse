@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <br>
+    <h1>Profile</h1>
+    <p>Login: <span th:text="${user.login}"></span></p>
+    <p>Name: <span th:text="${user.firstName}"></span></p>
+    <p>Patronymic: <span th:text="${user.middleName}"></span></p>
+    <p>Surname: <span th:text="${user.lastName}"></span></p>
+    <p>e-mail: <span th:text="${user.email}"></span></p>
+    <p>phone number: <span th:text="${user.phone}"></span></p>
+    <p>birthday: <span th:text="${user.birthday}"></span></p>
+    <a th:href="'/user/profile/update/' + ${user.id}"
+       class="btn btn-primary"
+       role="button"
+       aria-disabled="true">Edit</a>
+    <a th:href="'/user/change-password/' + ${userId}"
+       class="btn btn-primary"
+       role="button"
+       aria-disabled="true">Reset password</a>
+    <!--    <a th:if="${user.getRole().getName() == 'USER'}"-->
+    <!--       sec:authorize="isAuthenticated() && hasRole('ADMIN')"-->
+    <!--       th:href="'/user/change-password/' + ${user.id}"-->
+    <!--       class="btn btn-primary"-->
+    <!--       role="button"-->
+    <!--       aria-disabled="true">Users accounts</a>-->
+    <button class="btn btn-secondary" onclick="window.history.back()">Back</button>
+</div>
+</body>
+</html>

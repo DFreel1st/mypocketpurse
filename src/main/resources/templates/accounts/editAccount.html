@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Account</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h3>Editing account</h3>
+    <form method="POST" th:action="@{/accounts/edit}" th:object="${accountForm}" style="margin: 0 auto">
+        <input type="hidden" name="id"
+               th:value="${accountId}">
+        <div class="col-auto mb-3">
+            <label for="name" class="form-label">Login</label>
+            <input th:value="${accounts.name}" name="name" type="text" class="form-control" id="name" required>
+        </div>
+        <div class="col-auto mb-3">
+            <label for="amount" class="form-label">Amount</label>
+            <input th:value="${accounts.amount}" name="amount" type="text" class="form-control" id="amount"
+                   required>
+        </div>
+        <div class="col-auto mb-3">
+            <label for="currencyType" class="form-label">Currency type</label>
+            <select class="form-select" name="currencyType" id="currencyType"
+                    aria-label="Default select example" required>
+                <option selected>choose a currency type</option>
+                <option th:each="currencyType : ${T(com.project.mypocketpurse.model.CurrencyType).values()}"
+                        th:value="${currencyType}" th:text="${currencyType.getCurrencyTypeText()}"></option>
+            </select>
+        </div>
+        <div class="col-auto mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input th:value="${accounts.description}" name="description" type="text" class="form-control"
+                   id="description">
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    <br>
+    <button class="btn btn-secondary" onclick="window.history.back()">Back</button>
+</div>
+</body>
+</html>

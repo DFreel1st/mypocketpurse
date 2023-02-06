@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Category</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h3>Editing category</h3>
+    <form method="POST" th:action="@{/categories/edit}" th:object="${categoryForm}" style="margin: 0 auto">
+        <input type="hidden" name="id"
+               th:value="${categoryId}">
+        <div class="col-auto mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input th:value="${category.name}" name="name" type="text" class="form-control" id="name" required>
+        </div>
+        <div class="col-auto mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input th:value="${category.description}" name="description" type="text" class="form-control" id="description"
+                   required>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    <br>
+    <button class="btn btn-secondary" onclick="window.history.back()">Back</button>
+</div>
+</body>
+</html>

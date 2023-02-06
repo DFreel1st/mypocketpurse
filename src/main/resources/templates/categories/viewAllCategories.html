@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Categories</h1>
+    <a
+            th:href="'categories/add'"
+            class="btn btn-success"
+            role="button"
+            sec:authorize="isAuthenticated() && (hasRole('ROLE_SUPPORT') || hasRole('ADMIN'))"
+            style="float: left"
+            aria-disabled="true">Create category</a>
+    <button type="button" class="btn btn-secondary" style="float: right" onclick="window.history.back()">Back</button>
+    <div>
+    </div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th sec:authorize="isAuthenticated() && (hasRole('ROLE_SUPPORT') || hasRole('ADMIN'))" scope="col">Date of
+                creation
+            </th>
+            <th sec:authorize="isAuthenticated() && (hasRole('ROLE_SUPPORT') || hasRole('ADMIN'))" scope="col">Creator
+            </th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="category: ${categories}">
+            <td th:text="${category.name}"></td>
+            <td th:text="${category.description}"></td>
+            <td sec:authorize="isAuthenticated() && (hasRole('ROLE_SUPPORT') || hasRole('ADMIN'))"
+                th:text="${category.createdWhen}"></td>
+            <td sec:authorize="isAuthenticated() && (hasRole('ROLE_SUPPORT') || hasRole('ADMIN'))"
+                th:text="${category.createdBy}"></td>
+            <td>
+                <a
+                        th:href="'categories/edit/' + ${category.id}"
+                        class="btn btn-success"
+                        role="button"
+                        sec:authorize="isAuthenticated() && (hasRole('ROLE_SUPPORT') || hasRole('ADMIN'))"
+                        aria-disabled="true">Edit</a>
+            </td>
+            <td>
+                <a
+                        th:href="'categories/delete/' + ${category.id}"
+                        class="btn btn-danger"
+                        role="button"
+                        onclick="return confirm('Are you sure you want to delete?');"
+                        sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('ROLE_SUPPORT'))"
+                        aria-disabled="true">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <script>
+        function confirmDelete() {
+            return 'Are you sure you want to delete?';
+        }
+    </script>
+</div>
+</body>
+</html>

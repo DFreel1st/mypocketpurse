@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Actions</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Actions</h1>
+    <a
+            th:href="'actions/add'"
+            class="btn btn-success"
+            role="button"
+            style="float: left"
+            aria-disabled="true">Create action</a>
+    <button type="button" class="btn btn-secondary" style="float: right" onclick="window.history.back()">Back</button>
+    <div>
+        <br>
+        <br>
+        <h4>Search</h4>
+        <div class="row">
+            <div class="col">
+                <form method="POST" th:action="@{/actions/search}" th:object="${actionSearchForm}">
+                    <div class="row">
+                        <div class="col-auto">
+                            <label for="account" class="col-form-label">Account</label>
+                        </div>
+                        <div class="col-auto">
+                            <select class="form-select" name="account" id="account" aria-label="Default select example">
+                                <option selected th:value="null">choose an account</option>
+                                <option th:each="account : ${accounts}"
+                                        th:value="${account.id}"
+                                        th:text="${account.name}"></option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <label for="category" class="col-form-label">Category</label>
+                        </div>
+                        <div class="col-auto">
+                            <select class="form-select" name="category" id="category"
+                                    aria-label="Default select example">
+                                <option selected th:value="null">choose a category</option>
+                                <option th:each="category : ${categories}"
+                                        th:value="${category.id}"
+                                        th:text="${category.name}"></option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <label for="label" class="col-form-label">Label</label>
+                        </div>
+                        <div class="col-auto">
+                            <select class="form-select" name="label" id="label" aria-label="Default select example">
+                                <option selected th:value="null">choose a label</option>
+                                <option th:each="label : ${labels}"
+                                        th:value="${label.id}"
+                                        th:text="${label.name}"></option>
+                            </select>
+                        </div>
+                        <!--                        <div class="col-auto" sec:authorize="isAuthenticated() && hasRole('ADMIN')">-->
+                        <!--                            <label for="login" class="col-form-label">Creator</label>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="col-auto" sec:authorize="isAuthenticated() && hasRole('ADMIN')">-->
+                        <!--                            <select class="form-select" name="user" id="login" aria-label="Default select example">-->
+                        <!--                                <option selected th:value="null">choose a creator</option>-->
+                        <!--                                <option th:each="user : ${users}"-->
+                        <!--                                        th:value="${user.id}"-->
+                        <!--                                        th:text="${user.login}"></option>-->
+                        <!--                            </select>-->
+                        <!--                        </div>-->
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br>
+    </div>
+    <table class="table table-striped" id="mytable">
+        <thead>
+        <tr>
+            <th scope="col">Account</th>
+            <th sec:authorize="isAuthenticated() && !hasRole('ADMIN')" scope="col">
+                Amount
+            </th>
+            <th scope="col">Action type</th>
+            <th scope="col">Category</th>
+            <th scope="col">Date</th>
+            <th scope="col">Label</th>
+            <th sec:authorize="isAuthenticated() && hasRole('ADMIN')" scope="col">Date of creation</th>
+            <th sec:authorize="isAuthenticated() && hasRole('ADMIN')" scope="col">Creator</th>
+            <th scope="col"></th>
+            <!--            <th scope="col"></th>-->
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="action: ${actions}">
+            <td th:text="${action.account.name}"></td>
+            <td sec:authorize="isAuthenticated() && !hasRole('ADMIN')"
+                th:text="${action.amount + ' (' + action.account.currencyType.getCurrencyTypeText() + ')'}"></td>
+            <td th:text="${action.actionType}"></td>
+            <td th:text="${action.category.name}"></td>
+            <td th:text="${action.dateTime}"></td>
+            <td th:text="${action?.label?.name}"></td>
+            <td sec:authorize="isAuthenticated() && hasRole('ADMIN')" th:text="${action.createdWhen}"></td>
+            <td sec:authorize="isAuthenticated() && hasRole('ADMIN')" th:text="${action.createdBy}"></td>
+            <td>
+                <!--                <a-->
+                <!--                        th:href="'actions/edit/' + ${action.id}"-->
+                <!--                        class="btn btn-success"-->
+                <!--                        role="button"-->
+                <!--                        aria-disabled="true">Edit</a>-->
+                <a
+                        th:href="'actions/delete/' + ${action.id}"
+                        class="btn btn-danger"
+                        role="button"
+                        onclick="return confirm('Are you sure you want to delete?');"
+                        aria-disabled="true">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Pagination" th:if="${actions.totalPages gt 0}">
+        <ul class="pagination justify-content-center font-weight-bold">
+            <li class="page-item" th:classappend="${actions.number eq 0} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/actions?page={id}(id=${actions.number lt 2 ? 1 : actions.number})}"
+                   aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item" th:classappend="${i eq actions.number + 1} ? 'active'"
+                th:each="i : ${#numbers.sequence( 1, actions.totalPages, 1)}">
+                <a class="page-link" th:href="@{/actions?page={id}(id=${i})}" th:text="${i}"
+                   th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+            </li>
+            <li class="page-item" th:classappend="${actions.number eq actions.totalPages - 1} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/actions?page={id}(id=${actions.number + 2})}"
+                   aria-label="Next" title="Next Page" data-toggle="tooltip">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <script>
+        function confirmDelete() {
+            return 'Are you sure you want to leave?';
+        }
+    </script>
+</div>
+</body>
+</html>

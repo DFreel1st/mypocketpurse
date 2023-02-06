@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Registration</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <form method="POST" th:action="@{/user/registration}" th:object="${userForm}" style="margin: 0 auto">
+        <div class="row">
+            <div class="col-auto">
+                <label for="login" class="form-label">Login</label>
+                <input name="login" th:field="*{login}" type="text" class="form-control" id="login">
+                <div class="alert alert-warning"
+                     th:if="${#fields.hasErrors('login')}"
+                     th:errors="*{login}">
+                </div>
+            </div>
+            <div class="col-auto">
+                <label for="password" class="form-label">Password</label>
+                <input name="password" th:field="*{password}" type="password" class="form-control" id="password">
+                <div class="alert alert-warning"
+                     th:if="${#fields.hasErrors('password')}"
+                     th:errors="*{password}">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-auto">
+                <label for="lastName" class="form-label">Surname</label>
+                <input name="lastName" th:field="*{lastName}" type="text" class="form-control" id="lastName">
+                <div class="alert alert-warning"
+                     th:if="${#fields.hasErrors('lastName')}"
+                     th:errors="*{lastName}">
+                </div>
+            </div>
+            <div class="col-auto">
+                <label for="firstName" class="form-label">Name</label>
+                <input name="firstName" th:field="*{firstName}" type="text" class="form-control" id="firstName"
+                       required>
+                <div class="alert alert-warning"
+                     th:if="${#fields.hasErrors('firstName')}"
+                     th:errors="*{firstName}">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-auto">
+                <label for="middleName" class="form-label">Patronymic</label>
+                <input name="middleName" type="text" class="form-control" id="middleName">
+            </div>
+            <div class="col-auto">
+                <label for="email" class="form-label">e-mail</label>
+                <input name="email" th:field="*{email}" type="text" class="form-control" id="email">
+                <div class="alert alert-warning"
+                     th:if="${#fields.hasErrors('email')}"
+                     th:errors="*{email}">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-auto">
+                <label for="phone" class="form-label">phone number</label>
+                <input name="phone" th:field="*{phone}" type="text" class="form-control" id="phone">
+                <div class="alert alert-warning"
+                     th:if="${#fields.hasErrors('phone')}"
+                     th:errors="*{phone}">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-auto">
+                <label for="birthday" class="form-label">birthday</label>
+                <input placeholder="YYYY-MM-DD" name="birthday" th:field="*{birthday}" type="text" class="form-control"
+                       id="birthday">
+                <div class="alert alert-warning"
+                     th:if="${#fields.hasErrors('birthday')}"
+                     th:errors="*{birthday}">
+                </div>
+            </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Register me</button>
+        <button type="button" class="btn btn-secondary" onclick="window.history.back()">Back</button>
+    </form>
+</div>
+</body>
+</html>

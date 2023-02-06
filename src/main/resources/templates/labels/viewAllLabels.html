@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Метки</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>My labels</h1>
+    <a
+            th:href="'labels/add'"
+            class="btn btn-success"
+            role="button"
+            style="float: left"
+            aria-disabled="true">Create label</a>
+    <button type="button" class="btn btn-secondary" style="float: right" onclick="window.history.back()">Back</button>
+    <div>
+    </div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th sec:authorize="isAuthenticated() && hasRole('ADMIN')" scope="col">Date of creation</th>
+            <th sec:authorize="isAuthenticated() && hasRole('ADMIN')" scope="col">Creator</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="label: ${labels}">
+            <td th:text="${label.name}"></td>
+            <td th:text="${label.description}"></td>
+            <td sec:authorize="isAuthenticated() && hasRole('ADMIN')" th:text="${label.createdWhen}"></td>
+            <td sec:authorize="isAuthenticated() && hasRole('ADMIN')" th:text="${label.user.getLogin()}"></td>
+            <td>
+                <a
+                        th:href="'labels/edit/' + ${label.id}"
+                        class="btn btn-success"
+                        role="button"
+                        aria-disabled="true">Edit</a>
+                <a
+                        th:href="'labels/delete/' + ${label.id}"
+                        class="btn btn-danger"
+                        role="button"
+                        onclick="return confirm('Are you sure you want to delete?');"
+                        aria-disabled="true">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <script>
+        function confirmDelete() {
+            return 'Are you sure you want to delete?';
+        }
+    </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit profile</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h3>Editing profile</h3>
+    <form method="POST" th:action="@{/user/profile/update}" th:object="${userForm}" style="margin: 0 auto">
+        <input type="hidden" name="id"
+               th:value="${userId}">
+        <div class="row">
+            <div class="col-auto mb-3">
+                <label for="login" class="form-label">Login</label>
+                <input th:value="${user.login}" name="login" type="text" class="form-control" id="login" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-auto mb-3">
+                <label for="lastName" class="form-label">Surname</label>
+                <input th:value="${user.lastName}" name="lastName" type="text" class="form-control" id="lastName"
+                       required>
+            </div>
+            <div class="col-auto mb-3">
+                <label for="firstName" class="form-label">Name</label>
+                <input th:value="${user.firstName}" name="firstName" type="text" class="form-control" id="firstName"
+                       required>
+            </div>
+            <div class="col-auto mb-3">
+                <label for="middleName" class="form-label">Patronymic</label>
+                <input th:value="${user.middleName}" name="middleName" type="text" class="form-control" id="middleName">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-auto mb-3">
+                <label for="phone" class="form-label">Phone number</label>
+                <input th:value="${user.phone}" name="phone" type="text" class="form-control" id="phone" required>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="email" class="form-label">E-mail</label>
+                <input th:value="${user.email}" name="email" type="text" class="form-control" id="email" required>
+            </div>
+        </div>
+        <div class="row">
+        </div>
+        <div class="row">
+            <div class="col-auto mb-3">
+                <label for="birthday" class="form-label">Birthday</label>
+                <input th:value="${user.birthday}" placeholder="YYYY-MM-DD" name="birthday" type="text"
+                       class="form-control" id="birthday" required>
+            </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    <br>
+    <button class="btn btn-secondary" onclick="window.history.back()">Back</button>
+</div>
+</body>
+</html>
